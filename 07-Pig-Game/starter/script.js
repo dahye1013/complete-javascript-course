@@ -78,3 +78,20 @@ btnHold.addEventListener('click', () => {
     score[activePlayer];
   switchPlayer();
 });
+
+btnNew.addEventListener('click', () => {
+  const winnerEl = document.querySelector('.player--winner');
+  if (winnerEl) {
+    winnerEl.classList.remove('player--winner');
+  }
+
+  score = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  playing = true;
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+  diceEl.classList.add('hidden');
+});
