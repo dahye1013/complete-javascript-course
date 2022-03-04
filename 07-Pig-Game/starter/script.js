@@ -18,18 +18,9 @@ score0El.textContent = 0;
 score1El.textContent = 0;
 diceEl.classList.add('hidden');
 
+let score = [0, 0];
 let currentScore = 0;
-let currentPlayer = 0;
-
-let player0Score = 0;
-let player1Score = 0;
-
-const switchPlayer = () => {
-  currentPlayer = currentPlayer ? 0 : 1;
-  currentScore = currentPlayer
-    ? Number(score1El.textContent)
-    : Number(score0El.textContent);
-};
+let activePlayer = 0;
 
 //Rolling Dice
 btnRoll.addEventListener('click', () => {
@@ -41,17 +32,14 @@ btnRoll.addEventListener('click', () => {
   diceEl.src = `dice-${dice}.png`;
 
   //3. Check for rolled 1
-  if (dice !== 1) {
-    if (currentPlayer === 0) {
-      player0Score += dice;
-      current0El.textContent = player0Score;
-    }
-
-    if (currentPlayer === 1) {
-      player1Score += dice;
-      current1El.textContent = player1Score;
-    }
-  } else {
-    switchPlayer();
+  if (dice === 1) {
+    currentScore = 0;
+    document.getElementById(`current--${activePlayer}`).textContent = 0;
+    activePlayer = activePlayer === 0 ? 1 : 0;
+    return;
   }
+
+  currentScore += dice;
+  document.getElementById(`current--${activePlayer}`).textContent =
+    currentScore;
 });
