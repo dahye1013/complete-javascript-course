@@ -16,15 +16,30 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-//Initial State
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
+let score, currentScore, activePlayer, playing;
 
-let score = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let playing = true;
+// Initialzing --------------------------------------------------------
+
+const init = function () {
+  // State
+  score = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  playing = true;
+
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+
+  diceEl.classList.add('hidden');
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
+};
+
+// Methods --------------------------------------------------------
 
 const switchPlayer = () => {
   currentScore = 0;
@@ -34,10 +49,7 @@ const switchPlayer = () => {
   player1El.classList.toggle('player--active');
 };
 
-//Rolling Dice
-btnRoll.addEventListener('click', () => {
-  if (!playing) return;
-
+const rollingDice = () => {
   //1. Generating a randome dice roll
   const dice = Math.trunc(Math.random() * 6) + 1;
 
@@ -54,12 +66,9 @@ btnRoll.addEventListener('click', () => {
   currentScore += dice;
   document.getElementById(`current--${activePlayer}`).textContent =
     currentScore;
-});
+};
 
-// Hold Score
-btnHold.addEventListener('click', () => {
-  if (!playing) return;
-
+const holdScore = () => {
   //  Add current score to active player's score
   score[activePlayer] += currentScore;
 
@@ -77,21 +86,22 @@ btnHold.addEventListener('click', () => {
   document.getElementById(`score--${activePlayer}`).textContent =
     score[activePlayer];
   switchPlayer();
+};
+
+// Add Event --------------------------------------------------------
+
+//Rolling Dice
+btnRoll.addEventListener('click', () => {
+  if (!playing) return;
+  rollingDice();
 });
 
-btnNew.addEventListener('click', () => {
-  const winnerEl = document.querySelector('.player--winner');
-  if (winnerEl) {
-    winnerEl.classList.remove('player--winner');
-  }
-
-  score = [0, 0];
-  currentScore = 0;
-  activePlayer = 0;
-  playing = true;
-  score0El.textContent = 0;
-  score1El.textContent = 0;
-  current0El.textContent = 0;
-  current1El.textContent = 0;
-  diceEl.classList.add('hidden');
+// Hold Score
+btnHold.addEventListener('click', () => {
+  if (!playing) return;
+  holdScore();
 });
+
+btnNew.addEventListener('click', init);
+
+init();
