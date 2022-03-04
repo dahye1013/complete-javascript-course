@@ -25,6 +25,14 @@ let score = [0, 0];
 let currentScore = 0;
 let activePlayer = 0;
 
+const switchPlayer = () => {
+  currentScore = 0;
+  document.getElementById(`current--${activePlayer}`).textContent = 0;
+  activePlayer = activePlayer === 0 ? 1 : 0;
+  player0El.classList.toggle('player--active');
+  player1El.classList.toggle('player--active');
+};
+
 //Rolling Dice
 btnRoll.addEventListener('click', () => {
   //1. Generating a randome dice roll
@@ -36,15 +44,20 @@ btnRoll.addEventListener('click', () => {
 
   //3. Check for rolled 1
   if (dice === 1) {
-    currentScore = 0;
-    document.getElementById(`current--${activePlayer}`).textContent = 0;
-    activePlayer = activePlayer === 0 ? 1 : 0;
-    player0El.classList.toggle('player--active');
-    player1El.classList.toggle('player--active');
+    switchPlayer();
     return;
   }
 
   currentScore += dice;
   document.getElementById(`current--${activePlayer}`).textContent =
     currentScore;
+});
+
+// Hold Score
+btnHold.addEventListener('click', () => {
+  //  Add current score to active player's score
+  score[activePlayer] += currentScore;
+  document.getElementById(`score--${activePlayer}`).textContent =
+    score[activePlayer];
+  switchPlayer();
 });
