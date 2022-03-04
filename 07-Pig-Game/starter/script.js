@@ -21,6 +21,16 @@ diceEl.classList.add('hidden');
 let currentScore = 0;
 let currentPlayer = 0;
 
+let player0Score = 0;
+let player1Score = 0;
+
+const switchPlayer = () => {
+  currentPlayer = currentPlayer ? 0 : 1;
+  currentScore = currentPlayer
+    ? Number(score1El.textContent)
+    : Number(score0El.textContent);
+};
+
 //Rolling Dice
 btnRoll.addEventListener('click', () => {
   //1. Generating a randome dice roll
@@ -32,8 +42,16 @@ btnRoll.addEventListener('click', () => {
 
   //3. Check for rolled 1
   if (dice !== 1) {
-    currentScore += dice;
-    current0El.textContent = currentScore;
+    if (currentPlayer === 0) {
+      player0Score += dice;
+      current0El.textContent = player0Score;
+    }
+
+    if (currentPlayer === 1) {
+      player1Score += dice;
+      current1El.textContent = player1Score;
+    }
   } else {
+    switchPlayer();
   }
 });
