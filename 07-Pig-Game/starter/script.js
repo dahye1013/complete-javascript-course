@@ -24,6 +24,7 @@ diceEl.classList.add('hidden');
 let score = [0, 0];
 let currentScore = 0;
 let activePlayer = 0;
+let playing = true;
 
 const switchPlayer = () => {
   currentScore = 0;
@@ -35,6 +36,8 @@ const switchPlayer = () => {
 
 //Rolling Dice
 btnRoll.addEventListener('click', () => {
+  if (!playing) return;
+
   //1. Generating a randome dice roll
   const dice = Math.trunc(Math.random() * 6) + 1;
 
@@ -55,8 +58,22 @@ btnRoll.addEventListener('click', () => {
 
 // Hold Score
 btnHold.addEventListener('click', () => {
+  if (!playing) return;
+
   //  Add current score to active player's score
   score[activePlayer] += currentScore;
+
+  //Win the Game
+  if (score[activePlayer] >= 20) {
+    playing = false;
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.add('player--winner');
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.remove('player--active');
+  }
+
   document.getElementById(`score--${activePlayer}`).textContent =
     score[activePlayer];
   switchPlayer();
